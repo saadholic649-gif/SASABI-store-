@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SASABI Fragrance</title>
+
+<style>
+body {margin:0;font-family:Arial;background:#0f172a;color:#fff;}
+header {background:#020617;padding:20px;text-align:center;font-size:28px;font-weight:bold;letter-spacing:2px;}
+nav {display:flex;justify-content:center;gap:20px;background:#1e293b;padding:10px;}
+nav a {color:white;text-decoration:none;}
+.hero {text-align:center;padding:60px;background:linear-gradient(to right,#1e3a8a,#0ea5e9);}
+.hero h1 {font-size:42px;}
+.products {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:40px;}
+.card {background:#1e293b;padding:20px;border-radius:12px;text-align:center;transition:0.3s;}
+.card:hover {transform:scale(1.05);}
+.card img {width:100%;border-radius:10px;height:200px;object-fit:cover;}
+.btn {margin-top:10px;display:inline-block;padding:10px 20px;background:#0ea5e9;color:white;border-radius:8px;text-decoration:none;cursor:pointer;border:none;}
+.cart {position:fixed;top:20px;right:20px;background:#0ea5e9;padding:10px 15px;border-radius:8px;cursor:pointer;}
+footer {background:#020617;text-align:center;padding:20px;margin-top:20px;}
+.admin {position:fixed;bottom:20px;right:20px;background:#22c55e;padding:10px;border-radius:8px;cursor:pointer;}
+</style></head>
+<body>
+
+<header>SASABI FRAGRANCE</header>
+
+<div class="cart" onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
+<div class="admin" onclick="addProduct()">➕ Add Product</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#products">Shop</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section class="hero">
+<h1>Luxury Fragrance Collection</h1>
+<p>Premium scents for bold personalities</p>
+</section>
+
+<section class="products" id="products"></section>
+
+<section id="contact" style="text-align:center;padding:40px;">
+<h2>Order on WhatsApp</h2>
+<button class="btn" onclick="orderWhatsApp()">Order Now</button>
+</section>
+
+<footer>
+<p>© 2026 SASABI Fragrance</p>
+</footer>
+
+<script>
+let cart = [];
+let products = [
+{name:'Ocean Noir',price:2999,img:'https://images.unsplash.com/photo-1585386959984-a41552231658'},
+{name:'Royal Oud',price:3499,img:'https://images.unsplash.com/photo-1594035910387-fea47794261f'},
+{name:'Midnight Musk',price:2799,img:'https://images.unsplash.com/photo-1615634260167-c8cdede054de'}
+];
+
+function renderProducts(){
+let container = document.getElementById('products');
+container.innerHTML='';
+products.forEach((p,i)=>{
+container.innerHTML += `
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p>Rs. ${p.price}</p>
+<button class="btn" onclick="addToCart('${p.name}',${p.price})">Add to Cart</button>
+</div>`;
+});
+}
+
+function addToCart(name,price){
+cart.push({name,price});
+document.getElementById('cart-count').innerText = cart.length;
+}
+
+function viewCart(){
+let msg = 'Your Cart:\n';
+let total = 0;
+cart.forEach(item => {msg += item.name + ' - Rs.'+item.price+'\n'; total+=item.price;});
+msg += '\nTotal: Rs.'+total;
+alert(msg);
+}
+
+function orderWhatsApp(){
+let msg = 'Order Details:%0A';
+let total = 0;
+cart.forEach(item => {msg += item.name + ' - Rs.'+item.price+'%0A'; total+=item.price;});
+msg += '%0ATotal: Rs.'+total;
+window.open('https://wa.me/923XXXXXXXXX?text='+msg);
+}
+
+function addProduct(){
+let name = prompt('Product name');
+let price = prompt('Price');
+let img = prompt('Image URL');
+if(name && price && img){
+products.push({name,price,img});
+renderProducts();
+}
+}
+
+renderProducts();
+
+function checkout(){
+let method = prompt('Select Payment Method:\n1. Cash on Delivery\n2. EasyPaisa\n3. JazzCash');
+if(method=='1'){
+orderWhatsApp();
+}
+else if(method=='2' || method=='3'){
+alert('Send payment on this number: 03XXXXXXXXX\nThen click OK to confirm');
+orderWhatsApp();
+}
+else{
+alert('Invalid option');
+}
+}
+</script>
+
+</body>
+</html>
